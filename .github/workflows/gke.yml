@@ -33,13 +33,16 @@ jobs:
     
     - name: instalando components / ter acesso ao cluster
       run: gcloud components install gke-gcloud-auth-plugin
-        
-    - name: http-transport
-      run: sudo apt-get install apt-transport-https ca-certificates gnupg
 
-    - name: instalando auth plg
-      run: sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
-
+    - name: gpg key package
+      run: curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+    
+    - name: gcloud cli distrib
+      run: echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    
+    - name: auth plugin
+      run: sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin 
+    
     - name: fetch do cluster auth
       run: gcloud container clusters get-credentials meu-cluster-autopilot --region southamerica-east1
 
