@@ -1,10 +1,9 @@
 name: "GKE"
 
 on:
-  workflow_run:
-    workflows: ["TFLint Checks"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 permissions:
   id-token: write
