@@ -27,7 +27,16 @@ jobs:
       uses: 'google-github-actions/setup-gcloud@v2'
       with:
         version: '>= 363.0.0'
-
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.9.0
+        terraform_wrapper: false
+    
+    - name: terraform init & apply
+      run: terraform init && apply
+    
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
     
@@ -45,3 +54,22 @@ jobs:
 
     - name: kubectl get namespaces
       run: kubectl get namespaces
+    
+    - name: ativando api
+      run:  gcloud services enable monitoring.googleapis.com && gcloud services enable container.googleapis.com
+    
+    - name: managed prometheus
+      run: gcloud container clusters update meu-cluster-autopilot \
+        --region=southamerica-east1 \
+        --enable-managed-prometheus
+    
+    - name: kubectl apply
+      run:  kubectl apply -f agent.yaml
+
+    - name: Setup Helm
+      uses: WyriHaximus/github-action-helm3@v3
+
+    - name: grafana
+      run: helm repo add grafana https://grafana.github.io/helm-charts \ &&
+        helm install grafana grafana/grafana --namespace monitoring --create-namespace
+
