@@ -35,7 +35,7 @@ jobs:
       run: gcloud components install gke-gcloud-auth-plugin
     
     - name: instalando auth plg
-      run: sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
+      run: apt-get install google-cloud-cli-gke-gcloud-auth-plugin
     
     - name: fetch do cluster auth
       run: gcloud container clusters get-credentials meu-cluster-autopilot --region southamerica-east1
