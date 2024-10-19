@@ -4,3 +4,5 @@ key.json
 .history
 grafana-key.json
 cmds.txt
+.lh
+.gitignore
